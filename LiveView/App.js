@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 
 import MapView from 'react-native-maps';
 import React, { useState, useEffect } from 'react';
@@ -8,6 +8,7 @@ export default function App() {
   
   const [location, setLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [darkMode, setDarkmode] = useState(true);
 
   useEffect(() => {
     (async () => {
@@ -32,10 +33,9 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.h1}>GPS APP mit Map</Text>
       <MapView
         style={styles.map}
-        // liteMode={true}
+        // liteMode={false}
         region={{
           latitude: 48.15506442863634,
           longitude: 11.555812969194868,
@@ -43,9 +43,27 @@ export default function App() {
           longitudeDelta: 0.022,
         }}
         // mapType={"satellite"}
-        showsUserLocation={true}
+        showsUserLocation={darkMode}
+
+        onMapReady={() => {// wenn Map geladen ist
+          console.log("Map geladen");
+          alert("Map geladen");
+        }} 
+
+        onDoublePress={() => {// wenn Map doppelt gedrückt wird
+          console.log("Map doppelt gedrückt");
+          alert("Map doppelt gedrückt");
+        }}
+
+        onUserLocationChange={() => {// wenn sich der Standort ändert
+          console.log("Standort geändert", darkMode);
+          // alert("Standort geändert");
+        }}
         
       />
+      {/* <Button title={`Darkmode ${darkMode}`} onPress={() => [
+        setDarkmode(!darkMode)
+      ]} /> */}
     </View>
   );
 }
@@ -57,12 +75,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  h1: {
-    fontSize: 20,
-    fontWeight: 400,
-  },
   map: {
-    width: "90%",
-    height: "90%",
+    width: "100%",
+    height: "100%",
   },
 });
